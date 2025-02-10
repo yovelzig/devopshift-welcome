@@ -1,0 +1,4 @@
+2025-02-10 15:58:57,796:myapp:INFO:main:5:<module>:its work
+2025-02-10 16:19:44,286:myapp:INFO:main:23:<module>:Server status is : True
+2025-02-10 16:19:50,979:myapp:ERROR:main:17:get_status:The server name does not exist
+2025-02-10 16:19:50,980:myapp:INFO:main:23:<module>:Server status is : False

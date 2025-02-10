@@ -1,38 +1,26 @@
-serverlist = ["server1" ,"server2", "server3", "server4"]
-serverdict = {"ngnix", "docker", "dock"}
-try:
-    user_input = input("please enter the name of your server : ")
-    
-    if not user_input.strip():
-        raise ValueError("input cannot be empty")
-    
-    if not user_input.isalnum():
-        raise ValueError("the input should contains characters only")
-    if user_input in serverdict:
-        print("server is running")
+from log import setup_logging
+
+logger = setup_logging()
+servers = {"ngnix": True, "docker": False}
+
+def get_status(server_name: str) -> bool:
+    lowercase_servers = {key.strip().lower(): value for key, value in servers.items()}
+    if server_name in servers:
+         return servers[server_name]
     else:
-        print("server not recognized")
-except ValueError as e:
-    print(f"invalid input :{e}")
+        logger.error("The server name does not exist")
     
 
-
-    
-try:
-        server_name = input("Please enter your server name: ")
-        
-        # Check for empty input
-        if not server_name.strip():
-            raise ValueError("Input cannot be empty.")
-        
-        # Check for non-alphanumeric characters
-        if not server_name.isalnum():
-            raise ValueError("Input must contain only alphanumeric characters.")
-        if server_name in serverlist:
-            print("Server is running")
-        else:
-            print("Server not recognize")
+def get_status(server_name: str) -> bool:
+    lowercase_servers = {key.strip().lower(): value for key, value in servers.items()}
+    try:
+         return servers[server_name]
+    except KeyError:
+        logger.error("The server name does not exist")
 
 
-except ValueError as e:
-        print(f"Invalid input: {e}")
+while True:
+    server_name = input("Enter server name : ").strip().lower()
+    status = get_status(server_name)
+    logger.info(f"Server {server_name} status is :  {status}")
+    # logger.info("Server status is : "+str(status))
