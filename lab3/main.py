@@ -1,0 +1,38 @@
+from fastapi import FastAPI
+from models import ServerStatusResponse, Server , read_server_list , add_new_server
+
+app = FastAPI()
+
+    
+@app.get("/server")
+def get_server(server_name: str) -> ServerStatusResponse:
+    servers = read_server_list()
+    # server_status = servers.get(server_name, "Does not exist")
+    for server in servers:
+        if server.name == server_name:
+            server_status = server.online
+            break
+        return ServerStatusResponse(server_name=server_name, server_status=server_status)
+    return ServerStatusResponse(server_name=server_name, server_status="Did not find server")
+
+
+@app.post("/server")
+def create_server(server_name: str) -> ServerStatusResponse:
+    new_server = Server(name=server_name, online=True, cpus=6, ram=10)
+    add_new_server(new_server)
+    return ServerStatusResponse(server_name=server_name, server_status="Created")
+    # if server_name in servers:
+    #     return ServerStatusResponse(server_name, "Name already exists")
+    # else:
+    #     add_new_server(Server(name=server_name, online=True, cpus=6, ram=10))
+    #     servers[server_name] = True
+    #     return ServerStatusResponse(server_name, "Created")
+ 
+ 
+ 
+ 
+ 
+    
+my_list = ['apple', 'banana', 'cherry']
+my_dict = dict(enumerate(my_list))
+print(my_dict)

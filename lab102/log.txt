@@ -1,0 +1,5 @@
+2025-02-11 14:09:45,091:myapp:INFO:tools:25:<module>:Server ngnix status is :  True
+2025-02-11 14:47:27,532:myapp:ERROR:tools:19:get_status2:The server name does not exist
+2025-02-11 14:47:35,637:myapp:ERROR:tools:19:get_status2:The server name does not exist
+2025-02-11 14:50:11,484:myapp:ERROR:tools:19:get_status2:The server name does not exist
+2025-02-11 14:58:10,520:myapp:ERROR:tools:19:get_status2:The server name does not exist
