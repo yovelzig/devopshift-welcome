@@ -1,2 +1,4 @@
 
 {"name":"bb","online":true,"cpus":6,"ram":10}
+{"name":"ani","online":true,"cpus":6,"ram":10}
+{"name":"maa","online":true,"cpus":6,"ram":10}
