@@ -11,10 +11,8 @@ def get_server(server_name: str) -> ServerStatusResponse:
     for server in servers:
         if server.name == server_name:
             server_status = server.online
-            break
-        return ServerStatusResponse(server_name=server_name, server_status=server_status)
+            return ServerStatusResponse(server_name=server_name, server_status=server_status)
     return ServerStatusResponse(server_name=server_name, server_status="Did not find server")
-
 
 @app.post("/server")
 def create_server(server_name: str) -> ServerStatusResponse:
@@ -28,11 +26,5 @@ def create_server(server_name: str) -> ServerStatusResponse:
     #     servers[server_name] = True
     #     return ServerStatusResponse(server_name, "Created")
  
+
  
- 
- 
- 
-    
-my_list = ['apple', 'banana', 'cherry']
-my_dict = dict(enumerate(my_list))
-print(my_dict)

@@ -1,0 +1,5 @@
+
+{"name":"ngnix","online":true,"cpus":6,"ram":10}
+{"name":"ngnix","online":true,"cpus":6,"ram":10}
+{"name":"docker","online":true,"cpus":6,"ram":10}
+{"name":"docker","online":true,"cpus":6,"ram":10}

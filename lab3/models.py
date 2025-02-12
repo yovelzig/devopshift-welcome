@@ -29,6 +29,7 @@ def read_server_list() -> list[Server]:
 
 
 def add_new_server(new_server: Server):
-    with open("servers.txt", "a") as f:
+    with open("C:\\Users\\User\\Desktop\\python\\python_study\\devopshift-welcome\\lab3\\servers.txt", "a") as f:
         f.write("\n")
         f.write(new_server.model_dump_json())
+
