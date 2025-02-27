@@ -51,6 +51,7 @@ pipeline {
                  ls
                  pwd
                  echo "Hello"
+                 echo "Hello world"
                  touch flask_app${env.BUILD_NUMBER}.log 
               """
               archiveArtifacts artifacts: "flask_app${env.BUILD_NUMBER}.log", allowEmptyArchive: true
