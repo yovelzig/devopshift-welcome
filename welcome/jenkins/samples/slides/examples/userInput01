@@ -44,17 +44,19 @@ pipeline {
                 }
             }
         }
+
         stage('archive log') {
             steps {
               sh """
                  ls
                  pwd
+                 echo "Hello"
                  touch flask_app${env.BUILD_NUMBER}.log 
               """
               archiveArtifacts artifacts: "flask_app${env.BUILD_NUMBER}.log", allowEmptyArchive: true
             }
         }
-
+ 
         // Run this stage regardless of the user choice but we will check the user choice in the stage and print a message
         stage('Finalize the Pipeline') {
             steps {
