@@ -44,6 +44,16 @@ pipeline {
                 }
             }
         }
+        stage('Build') {
+            steps {
+                sh 'mkdir -p output && echo "Hello, Jenkins!" > output/build.log'
+            }
+        }
+        stage('Archive Artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'output/build.log', allowEmptyArchive: true
+            }
+        }
 
         // Run this stage regardless of the user choice but we will check the user choice in the stage and print a message
         stage('Finalize the Pipeline') {
