@@ -44,14 +44,14 @@ pipeline {
                 }
             }
         }
-        stage('Build') {
+        stage('archive log') {
             steps {
-                sh 'mkdir -p output && echo "Hello, Jenkins!" > output/build.log'
-            }
-        }
-        stage('Archive Artifacts') {
-            steps {
-                archiveArtifacts artifacts: 'output/build.log', allowEmptyArchive: true
+              sh """
+                 ls
+                 pwd
+                 touch flask_app${env.BUILD_NUMBER}.log 
+              """
+              archiveArtifacts artifacts: "flask_app${env.BUILD_NUMBER}.log", allowEmptyArchive: true
             }
         }
 
