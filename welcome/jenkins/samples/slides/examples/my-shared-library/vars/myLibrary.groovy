@@ -3,7 +3,6 @@
 def buildApp() {
     echo "Now building the application..."
     // Mock build logic here
-    
 }
 
 def deployApp(String branchName) {
@@ -15,3 +14,4 @@ def cleanup() {
     echo "Cleaning up after build and deployment..."
     // Mock cleanup logic here
 }
+
