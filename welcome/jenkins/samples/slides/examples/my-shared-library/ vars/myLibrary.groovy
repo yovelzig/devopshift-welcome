@@ -2,7 +2,6 @@
 
 def buildApp() {
     echo "Now building the application..."
-    echo "Kaki"
     // Mock build logic here
 }
 
