@@ -8,6 +8,7 @@ pipeline {
        // IF APP_DEBUG is set to 'true' the DEBUG_BRANCH will be used as we might run it using pipeline script without full git repo
        APP_DEBUG = 'true'
        DEBUG_BRANCH = 'develop'
+       
    }
 
    stages {
