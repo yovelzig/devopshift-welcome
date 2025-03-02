@@ -1,0 +1,110 @@
+node {
+    // Define a reusable function
+    def runStage = { stageName, command ->
+        stage(stageName) {
+            echo "Starting stage: ${stageName}"
+            sh command
+        }
+    }
+
+    // Start the pipeline
+    stage('Clone') {
+        runStage('Clone', 'echo "Cloning repository..."')
+    }
+
+    stage('Build') {
+        runStage('Build', 'echo "Building Python project..."')
+    }
+
+    // Define parallel steps
+    stage('Parallel Tasks') {
+        parallel (
+            'Lint': {
+                runStage('Lint', 'echo "Running Python linting..."')
+            },
+            'Security Test': {
+                runStage('Security Test', 'echo "Running security tests..."')
+            }
+        )
+    }
+
+    // Optional deploy step
+    stage('Deploy to Production?') {
+        def userInput = input(
+            id: 'UserInput',
+            message: 'Deploy to production?',
+            parameters: [
+                [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Deploy?', name: 'Proceed']
+            ]
+        )
+        if (userInput) {
+            runStage('Deploy', 'echo "Deploying to production..."')
+        } else {
+            echo "Skipping deployment."
+        }
+    }
+
+    // Post actions
+    stage('Cleanup') {
+        runStage('Cleanup', 'echo "Cleaning up workspace..."')
+    }
+}
+
+//##############################################33
+// // without functions
+// pipeline {
+//     agent any
+//     // Define a reusable function
+
+//     stages {
+//         stage('clone') {
+//             steps {
+//                 echo 'clone from git...'
+//             }
+//         }
+//         stage('Build') {
+//             steps {
+//                 echo 'Building python project'
+//             }
+//         }
+//                 // Parallel execution of tests
+//         stage('Test') {
+//             parallel(
+//                 'linting : ': {
+//                     echo 'Running Python linting...'
+//                 },
+//                 'Security Tests': {
+//                     echo 'Running security tests...'
+//                 }
+//             )
+//         }
+//         stage('Wait for User Approval') {
+//             steps {
+//                 script {
+//                     // Wait for user interaction and store the result
+//                     def userInput = input message: 'Is the application running successfully?',
+//                                          parameters: [choice(name: 'Proceed', choices: 'Proceed\nAbort', description: 'Choose an option')]
+//                     // Set a variable based on user input
+//                     env.USER_CHOICE = userInput
+//                 }
+//             }
+//         }
+//         stage('Deploy') {
+//             // Run this stage ONLY! if the user chooses 'Proceed'
+
+//             when {
+//                 expression { env.USER_CHOICE == 'Proceed' }
+//             }
+//             steps {
+//                 script {
+//                     echo 'Deploying to production...'
+//                 }
+//             }
+//         }
+
+//        // Post actions
+//     stage('Cleanup') {
+//         runStage('Cleanup', 'echo "Cleaning up workspace..."')
+//     }
+//   }
+// }
