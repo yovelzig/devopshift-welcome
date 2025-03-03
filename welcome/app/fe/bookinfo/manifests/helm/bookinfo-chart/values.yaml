@@ -1,19 +1,22 @@
-replicaCount: 1
 
 image:
   tag: 1.19.1
   pullPolicy: IfNotPresent
 
 details:
+  replicaCount: 1
   image: docker.io/istio/examples-bookinfo-details-v1
 
 ratings:
+  replicaCount: 1
   image: docker.io/istio/examples-bookinfo-ratings-v1
 
 reviews:
+  replicaCount: 1
   image: docker.io/istio/examples-bookinfo-reviews-v1
 
 productpage:
+  replicaCount: 1
   image: docker.io/istio/examples-bookinfo-productpage-v1
 
 service:
