@@ -73,7 +73,7 @@ pipeline {
                 sh """
                 docker-compose up -d
                 sleep 10  # Allow services to start
-                sh 'docker ps | grep -q 5002 && echo "Port 5002 is mapped and the container is running." || exit 1 ' // Adjust port for backend if needed		 -f http://localhost:5002 || exit 1  # Adjust for backend if needed
+                docker ps | grep -q 5002 && echo "Port 5002 is mapped and the container is running." || exit 1 ' // Adjust port for backend if needed
                 docker-compose down
                 """
                 }
