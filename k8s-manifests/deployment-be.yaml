@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: be
-          image: yonelzig/be-exam:latest
+          image: yovelzig/be-exam:latest
           ports:
             - containerPort: 5001
           env:
