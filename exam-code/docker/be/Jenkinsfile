@@ -20,7 +20,7 @@ pipeline {
                 parallel {
                     stage('Flake8 Linting') {
                         steps {
-                            dir('be') {
+                            dir('exam-code/docker/be') {
                                 sh 'pip install flake8'
                                 sh 'flake8 ./src/mainbe.py'
                             }
