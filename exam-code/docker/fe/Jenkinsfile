@@ -28,7 +28,9 @@ pipeline {
                     }
                     stage('Bandit Security Scan') {
                         steps {
+                            sh 'ls'
                             dir('fe') {
+                                sh 'ls'
                                 sh 'pip install bandit'
                                 sh 'bandit -r .'
                             }
