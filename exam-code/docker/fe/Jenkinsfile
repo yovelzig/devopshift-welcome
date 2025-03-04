@@ -20,7 +20,7 @@ pipeline {
                 parallel {
                     stage('Flake8 Linting') {
                         steps {
-                            dir('fe') {
+                            dir('exam-code/docker/fe') {
                                 sh 'pip install flake8'
                                 sh 'flake8 .'
                             }
@@ -29,7 +29,7 @@ pipeline {
                     stage('Bandit Security Scan') {
                         steps {
                             sh 'ls'
-                            dir('fe') {
+                            dir('exam-code/docker/fe') {
                                 sh 'ls'
                                 sh 'pip install bandit'
                                 sh 'bandit -r .'
@@ -40,7 +40,7 @@ pipeline {
             }
         stage('Install Dependencies') {
             steps {
-                dir('fe') {
+                dir('exam-code/docker/fe') {
                     sh 'pwd'
                     sh 'ls'
                     sh 'pip install -r requirements.txt'
@@ -51,7 +51,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                dir('fe') {
+                dir('exam-code/docker/fe') {
                    sh 'docker build -t $DOCKER_REGISTRY/$REPO_NAME:$BUILD_NUMBER -f Dockerfile .'
                    sh 'docker tag $DOCKER_REGISTRY/$REPO_NAME:$BUILD_NUMBER $DOCKER_REGISTRY/$REPO_NAME:latest'
                     
