@@ -21,7 +21,7 @@ pipeline {
                         steps {
                             dir('be') {
                                 sh 'pip install flake8'
-                                sh 'flake8 ./src/mainfe.py'
+                                sh 'flake8 .'
                             }
                         }
                     }
@@ -29,7 +29,7 @@ pipeline {
                         steps {
                             dir('be') {
                                 sh 'pip install bandit'
-                                sh 'bandit -r ./src/mainfe.py'
+                                sh 'bandit -r .'
                             }
                         }
                     }
