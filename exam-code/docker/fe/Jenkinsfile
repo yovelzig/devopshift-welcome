@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-       DOCKERHUB_CREDENTIALS = credentials('docker-hub-creds') # configure jenkins with your credentials 
+       DOCKERHUB_CREDENTIALS = credentials('docker-hub-creds')
        DOCKER_REGISTRY = 'yovelzig'
        REPO_NAME = 'fe-exam'  //### IMAGE NAME -  Change to 'be-exam' WHEN creating the backend pipeline
        IMAGE_TAG = "${env.BUILD_NUMBER}"  
