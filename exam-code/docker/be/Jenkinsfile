@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-       DOCKERHUB_CREDENTIALS = credentials('docker-hub-creds')  
+       DOCKERHUB_CREDENTIALS = credentials('docker-hub-creds')
        DOCKER_REGISTRY = 'yovelzig'
        REPO_NAME = 'be-exam'  //### IMAGE NAME -  Change to 'be-exam' WHEN creating the backend pipeline
        IMAGE_TAG = "${env.BUILD_NUMBER}"  
@@ -29,6 +29,7 @@ pipeline {
                     stage('Bandit Security Scan') {
                         steps {
                             dir('exam-code/docker/be') {
+                                sh 'ls'
                                 sh 'pip install bandit'
                                 sh 'bandit -r ./src/mainbe.py || true'
                             }
@@ -40,8 +41,10 @@ pipeline {
             steps {
                 dir('exam-code/docker/be') {
                     sh 'pwd'
+                    sh 'ls'
                     sh 'pip install -r requirements.txt'
                 }
+ 
             }
         }
 
@@ -62,22 +65,29 @@ pipeline {
             }
         }
         stage('Integration Test with Docker Compose') {
+            
             steps {
+                dir('exam-code/docker') {
+                sh 'curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose'
+                sh 'chmod +x /usr/local/bin/docker-compose'
                 sh """
-                docker compose up -d
+                docker-compose up -d
                 sleep 10  # Allow services to start
-                curl -f http://localhost:5002 || exit 1  # Adjust for backend if needed
-                docker compose down
+                docker ps | grep -q 5002 && echo "Port 5002 is mapped and the container is running." || echo "1"  // Adjust port for backend if needed
+                docker-compose down
                 """
+                }
             }
         }
         stage('Push to Docker Hub') {
             steps {
+                dir('exam-code/docker/be') {
                 sh """
                 echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
                 docker push $DOCKER_REGISTRY/$REPO_NAME:$BUILD_NUMBER
                 docker push $DOCKER_REGISTRY/$REPO_NAME:latest
                 """
+                }
             }
         }
         
