@@ -12,6 +12,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                      git branch: 'main', url: 'https://github.com/yovelzig/devopshift-welcome.git'
+                     sh 'git checkout workshop/argo-jenkins-exam'
                   }
             }
                    
@@ -38,7 +39,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                     sh 'pwd'
-                    sh 'git checkout workshop/argo-jenkins-exam'
                     sh 'pip install -r fe/requirements.txt'
  
             }
