@@ -65,22 +65,28 @@ pipeline {
             }
         }
         stage('Integration Test with Docker Compose') {
+            dir('exam-code/docker') {
             steps {
+                sh 'sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose'
+                sh 'sudo chmod +x /usr/local/bin/docker-compose'
                 sh """
                 docker compose up -d
                 sleep 10  # Allow services to start
                 curl -f http://localhost:5002 || exit 1  # Adjust for backend if needed
                 docker compose down
                 """
+                }
             }
         }
         stage('Push to Docker Hub') {
             steps {
+                dir('exam-code/docker/fe') {
                 sh """
                 echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
                 docker push $DOCKER_REGISTRY/$REPO_NAME:$BUILD_NUMBER
                 docker push $DOCKER_REGISTRY/$REPO_NAME:latest
                 """
+                }
             }
         }
         
