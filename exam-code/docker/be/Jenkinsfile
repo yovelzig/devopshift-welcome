@@ -22,15 +22,15 @@ pipeline {
                         steps {
                             dir('be') {
                                 sh 'pip install flake8'
-                                sh 'flake8 .'
+                                sh 'flake8 ./src/mainbe.py'
                             }
                         }
                     }
                     stage('Bandit Security Scan') {
                         steps {
-                            dir('be') {
+                            dir('exam-code/docker/be') {
                                 sh 'pip install bandit'
-                                sh 'bandit -r .'
+                                sh 'bandit -r ./src/mainbe.py'
                             }
                         }
                     }
@@ -38,7 +38,7 @@ pipeline {
             }
         stage('Install Dependencies') {
             steps {
-                dir('be') {
+                dir('exam-code/docker/be') {
                     sh 'pwd'
                     sh 'pip install -r requirements.txt'
                 }
@@ -47,7 +47,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                dir('be') {
+                dir('exam-code/docker/be') {
                    sh 'docker build -t $DOCKER_REGISTRY/$REPO_NAME:$BUILD_NUMBER -f Dockerfile .'
                    sh 'docker tag $DOCKER_REGISTRY/$REPO_NAME:$BUILD_NUMBER $DOCKER_REGISTRY/$REPO_NAME:latest'
                     
