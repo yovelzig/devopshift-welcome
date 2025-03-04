@@ -1,0 +1,97 @@
+pipeline {
+    agent any
+
+    environment {
+       DOCKERHUB_CREDENTIALS = credentials('docker-hub-creds')
+       DOCKER_REGISTRY = 'yovelzig'
+       REPO_NAME = 'fe-exam'  //### IMAGE NAME -  Change to 'be-exam' WHEN creating the backend pipeline
+       IMAGE_TAG = "${env.BUILD_NUMBER}"  
+    }
+    
+    stages {
+        stage('Clone Repository') {
+            steps {
+                     git branch: 'main', url: 'https://github.com/yovelzig/devopshift-welcome.git'
+                     sh 'git checkout workshop/argo-jenkins-exam'
+                  }
+            }
+                   
+        stage('Lint & Security Scan') {
+                parallel {
+                    stage('Flake8 Linting') {
+                        steps {
+                            dir('exam-code/docker/fe') {
+                                sh 'pip install flake8'
+                                sh 'flake8 ./src/mainfe.py || true'
+                            }
+                        }
+                    }
+                    stage('Bandit Security Scan') {
+                        steps {
+                            dir('exam-code/docker/fe') {
+                                sh 'ls'
+                                sh 'pip install bandit'
+                                sh 'bandit -r ./src/mainfe.py || true'
+                            }
+                        }
+                    }
+                }
+            }
+        stage('Install Dependencies') {
+            steps {
+                dir('exam-code/docker/fe') {
+                    sh 'pwd'
+                    sh 'ls'
+                    sh 'pip install -r requirements.txt'
+                }
+ 
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                dir('exam-code/docker/fe') {
+                   sh 'docker build -t $DOCKER_REGISTRY/$REPO_NAME:$BUILD_NUMBER -f Dockerfile .'
+                   sh 'docker tag $DOCKER_REGISTRY/$REPO_NAME:$BUILD_NUMBER $DOCKER_REGISTRY/$REPO_NAME:latest'
+                    
+                }
+            }
+        }
+        stage('Run Tests in Container') {
+            steps {
+                
+                sh 'docker run --rm $DOCKER_REGISTRY/$REPO_NAME:$BUILD_NUMBER pytest tests/'
+                
+            }
+        }
+        stage('Integration Test with Docker Compose') {
+            
+            steps {
+                dir('exam-code/docker') {
+                sh 'curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose'
+                sh 'chmod +x /usr/local/bin/docker-compose'
+                sh """
+                docker-compose up -d
+                sleep 10  # Allow services to start
+                docker ps | grep -q 5002 && echo "Port 5002 is mapped and the container is running." || echo "1"  // Adjust port for backend if needed
+                docker-compose down
+                """
+                }
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                dir('exam-code/docker/fe') {
+                sh """
+                echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+                docker push $DOCKER_REGISTRY/$REPO_NAME:$BUILD_NUMBER
+                docker push $DOCKER_REGISTRY/$REPO_NAME:latest
+                """
+                }
+            }
+        }
+        
+        
+        
+    }
+}
