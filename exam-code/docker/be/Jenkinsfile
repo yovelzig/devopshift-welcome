@@ -38,6 +38,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir('be') {
+                    sh 'pwd'
                     sh 'git checkout workshop/argo-jenkins-exam'
                     sh 'pip install -r requirements.txt'
                 }
