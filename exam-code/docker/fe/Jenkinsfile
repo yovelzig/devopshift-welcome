@@ -38,8 +38,10 @@ pipeline {
             }
         stage('Install Dependencies') {
             steps {
+                dir('fe') {
                     sh 'pwd'
-                    sh 'pip install -r fe/requirements.txt'
+                    sh 'pip install -r requirements.txt'
+                }
  
             }
         }
