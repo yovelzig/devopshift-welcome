@@ -40,6 +40,7 @@ pipeline {
             steps {
                 dir('fe') {
                     sh 'pwd'
+                    sh 'ls'
                     sh 'pip install -r requirements.txt'
                 }
  
