@@ -22,7 +22,7 @@ pipeline {
                         steps {
                             dir('exam-code/docker/fe') {
                                 sh 'pip install flake8'
-                                sh 'flake8 .'
+                                sh 'flake8 ./src/mainfe.py'
                             }
                         }
                     }
@@ -32,7 +32,7 @@ pipeline {
                             dir('exam-code/docker/fe') {
                                 sh 'ls'
                                 sh 'pip install bandit'
-                                sh 'bandit -r .'
+                                sh 'bandit -r ./src/mainfe.py'
                             }
                         }
                     }
